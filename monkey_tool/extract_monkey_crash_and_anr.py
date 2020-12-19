@@ -17,7 +17,7 @@ class MonkeyLog(object):
     log_path = ''
     info_total = []
     info_final = []
-    
+
     def __init__(self):
         if os.path.exists(os.path.dirname(os.path.abspath(self.log_path)) + '/log.xlsx'):
             os.remove(os.path.dirname(os.path.abspath(self.log_path)) + '/log.xlsx')

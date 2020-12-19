@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import os
+
 optionStr = ""
 deviceStr = ""
 processId = ""
@@ -22,16 +23,14 @@ def launchKill():
             getProcessIdCommand = processBase % (optionStr, deviceStr)
             processId = os.popen(getProcessIdCommand)
             processIdStr = processId.read()
-            killCommand = killCommandBase % (optionStr,deviceStr)
+            killCommand = killCommandBase % (optionStr, deviceStr)
             os.popen(killCommand + processIdStr)
     else:
-        getProcessIdCommand = processBase % (optionStr,deviceStr)
+        getProcessIdCommand = processBase % (optionStr, deviceStr)
         processId = os.popen(getProcessIdCommand)
         processIdStr = processId.read()
-        killCommand = killCommandBase % (optionStr,deviceStr)
+        killCommand = killCommandBase % (optionStr, deviceStr)
         os.popen(killCommand + processIdStr)
-
-
 
 
 def getDevicesList():

@@ -1,11 +1,15 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+
 import os
+import sys
+
+alu_path = sys.argv[1]
 
 optionStr = ""
 deviceStr = ""
 
-killCommandBase = "adb%s%s uninstall com.crush.gogo"
+killCommandBase = "adb%s%s install %s"
 
 
 def launchUninstall():
@@ -18,11 +22,11 @@ def launchUninstall():
         for item in range(devicesSize):
             deviceStr = currentPhoneList[item]
             
-            killCommand = killCommandBase % (optionStr,deviceStr)
+            killCommand = killCommandBase % (optionStr,deviceStr,alu_path)
             os.popen(killCommand)
     else:
         
-        killCommand = killCommandBase % (optionStr,deviceStr)
+        killCommand = killCommandBase % (optionStr,deviceStr,alu_path)
         os.popen(killCommand)
 
 
