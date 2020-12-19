@@ -1,0 +1,16 @@
+// CRASH: com.cmcm.shorts (pid 12226)
+// Short Msg: java.lang.NullPointerException
+// Long Msg: java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String android.content.Context.getString(int)' on a null object reference
+// Build Label: OPPO/PACM00/PACM00:8.1.0/O11019/1527000058:user/release-keys
+// Build Changelist: 1529729031
+// Build Time: 1529729031000
+// java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.String android.content.Context.getString(int)' on a null object reference
+// 	at com.kxsimon.cmvideo.chat.activity.ChatFraShortVideo$31.a(ChatFraShortVideo.java:2511)
+// 	at com.cmcm.shortvideo.DownLoadVideoManager$1$1.run(DownLoadVideoManager.java:99)
+// 	at android.os.Handler.handleCallback(Handler.java:790)
+// 	at android.os.Handler.dispatchMessage(Handler.java:99)
+// 	at android.os.Looper.loop(Looper.java:183)
+// 	at android.app.ActivityThread.main(ActivityThread.java:7014)
+// 	at java.lang.reflect.Method.invoke(Native Method)
+// 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:514)
+// 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:888)
