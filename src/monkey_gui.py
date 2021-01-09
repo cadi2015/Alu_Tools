@@ -3,18 +3,10 @@
 
 import tkinter
 import os
-import subprocess
 import time
+import src.adb_helper
 
 nowTime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
-
-
-def get_screen_size(window):
-    return window.winfo_screenwidth(), window.winfo_screenheight()
-
-
-def get_window_size(window):
-    return window.winfo_reqwidth(), window.winfo_reqheight()
 
 
 def center_window(root, width, height):
@@ -39,8 +31,8 @@ def file_name_list(file_path):
         return files
 
 
-class MainAc(object):
-    window_TITLE = "Alu测试组工具合集_v1.0"
+class MainAc(tkinter.Tk):
+    WINDOW_TITLE = "Alu测试组工具合集_v1.0"
     current_workspace_path = os.getcwd()
 
     def __init__(self):
@@ -53,19 +45,18 @@ class MainAc(object):
         self.windowHeightMin = 400
         self.windowWidthMax = 700
         self.windowHeightMax = 500
-        self.root = tkinter.Tk()
-        self.root.title(MainAc.window_TITLE)
-        self.root.maxsize(self.windowWidthMax, self.windowHeightMax)
-        self.root.minsize(self.windowWidthMin, self.windowHeightMin)
-        self.root.wm_attributes('-topmost', 1)
-        center_window(self.root, self.windowWidthMin, self.windowHeightMin)
+        self.title(MainAc.WINDOW_TITLE)
+        self.maxsize(self.windowWidthMax, self.windowHeightMax)
+        self.minsize(self.windowWidthMin, self.windowHeightMin)
+        self.wm_attributes('-topmost', 1)
+        center_window(self, self.windowWidthMin, self.windowHeightMin)
 
     def init_views(self):
-        self.btn_start = tkinter.Button(self.root, command=self.startBtn, text="Monkey所有设备开始")
-        self.btn_stop = tkinter.Button(self.root, text="Monkey所有设备停止", command=self.stopBtn)
-        self.btn_pull_anr = tkinter.Button(self.root, text="拉取ANR traces.txt（单设备）", command=self.pullTraces)
-        self.btn_uninstall = tkinter.Button(self.root, text="卸载所有设备的Alu", command=self.uninstallApp)
-        self.btn_install = tkinter.Button(self.root, text="为所有设备安装Alu", command=self.installApp)
+        self.btn_start = tkinter.Button(self, command=self.startBtn, text="Monkey所有设备开始")
+        self.btn_stop = tkinter.Button(self, text="Monkey所有设备停止", command=self.stopBtn)
+        self.btn_pull_anr = tkinter.Button(self, text="拉取ANR traces.txt（单设备）", command=self.pullTraces)
+        self.btn_uninstall = tkinter.Button(self, text="卸载所有设备的Alu", command=self.uninstallApp)
+        self.btn_install = tkinter.Button(self, text="为所有设备安装Alu", command=self.installApp)
         self.box_list()
         self.refresh_btn()
         self.btn_query_devices_init()
@@ -93,7 +84,7 @@ class MainAc(object):
         self.btn_refresh = tkinter.Button(self.root, text="刷新", command=self.refresh_data)
 
     def query_devices(self):
-        devicesArray = getDevicesList()
+        devicesArray = src.adb_helper.get_device_list()
         deviceName = ""
         count = len(devicesArray)
         for ele in devicesArray:
@@ -112,16 +103,16 @@ class MainAc(object):
         self.lable_devices.pack()
 
     def startBtn(self):
-        os.popen("python launchMonkey_v1.4_crush.py")
+        os.popen("python launch_monkey.py")
 
     def stopBtn(self):
-        os.popen("python killMonkey_v1.1_crush.py")
+        os.popen("python kill_monkey.py")
 
     def pullTraces(self):
         os.popen("adb pull /data/anr/")
 
     def uninstallApp(self):
-        os.popen("python uninstall_app_v1.0_crush.py")
+        os.popen("python uninstall_app.py")
 
     def installApp(self):
         global currentRootPath  # 引入global的重要性
@@ -142,25 +133,6 @@ class MainAc(object):
             self.box_list['menu'].add_command(label=fileName, command=self.box_list_new_item_click_lis)
 
 
-def getDevicesList():
-    rt = os.popen("adb devices -l").readlines()
-    devicesList = []
-    rt.pop(0)
-    rt.pop()
-    for item in rt:
-        itemList = item.split()
-        deviceAndModel = itemList[0]
-        for everyStr in itemList:
-            if ("model" in everyStr):
-                deviceAndModel = deviceAndModel + "$" + everyStr
-        devicesList.append(deviceAndModel)
-    return devicesList
-
-
-def main():
-    FL = MainAc()
-    tkinter.mainloop()
-
-
 if __name__ == "__main__":
-    main()
+    root = MainAc()
+    root.mainloop()
