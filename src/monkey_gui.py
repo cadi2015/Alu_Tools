@@ -9,11 +9,11 @@ import src.adb_helper
 nowTime = time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
 
 
-def center_window(root, width, height):
-    screenwidth = root.winfo_screenwidth()
-    screenheight = root.winfo_screenheight()
+def center_window(root_wd, width, height):
+    screenwidth = root_wd.winfo_screenwidth()
+    screenheight = root_wd.winfo_screenheight()
     size = '%dx%d+%d+%d' % (width, height, (screenwidth - width) / 2, (screenheight - height) / 2)
-    root.geometry(size)
+    root_wd.geometry(size)
 
 
 currentRootPath = ""
@@ -36,6 +36,7 @@ class MainAc(tkinter.Tk):
     current_workspace_path = os.getcwd()
 
     def __init__(self):
+        super().__init__()
         self.init_window()
         self.init_views()
         self.complate_views()
@@ -57,31 +58,31 @@ class MainAc(tkinter.Tk):
         self.btn_pull_anr = tkinter.Button(self, text="拉取ANR traces.txt（单设备）", command=self.pullTraces)
         self.btn_uninstall = tkinter.Button(self, text="卸载所有设备的Alu", command=self.uninstallApp)
         self.btn_install = tkinter.Button(self, text="为所有设备安装Alu", command=self.installApp)
-        self.box_list()
+        self.init_box_list()
         self.refresh_btn()
         self.btn_query_devices_init()
         self.label_show_devices_init()
 
     def box_list(self):
-        self.box_variable = tkinter.StringVar(self.root)
+        self.box_variable = tkinter.StringVar(self)
         self.box_variable.set("选取安装包")  # default value
         self.installAppPaths = file_name_list(MainAc.current_workspace_path + "/apk")
-        self.box_list = tkinter.OptionMenu(self.root, self.box_variable, *(self.installAppPaths),
-                                           command=self.box_list_click_lis)
-        self.box_list.pack()
+        self.box_init = tkinter.OptionMenu(self, self.box_variable, *("cao", "nima"),
+                                                command=self.box_list_click_lis)
+        self.box_init.pack()
 
     def btn_query_devices_init(self):
         self.btn_query_devices = self.__btn_builder("查询已连接的设备", self.query_devices)
 
     def label_show_devices_init(self):
-        self.lable_devices = tkinter.Label(self.root, text="未知设备情况")
+        self.lable_devices = tkinter.Label(self, text="未知设备情况")
 
     def __btn_builder(self, btn_name, command_name):
-        btn_return = tkinter.Button(self.root, text=btn_name, command=command_name)
+        btn_return = tkinter.Button(self, text=btn_name, command=command_name)
         return btn_return
 
     def refresh_btn(self):
-        self.btn_refresh = tkinter.Button(self.root, text="刷新", command=self.refresh_data)
+        self.btn_refresh = tkinter.Button(self, text="刷新", command=self.refresh_data)
 
     def query_devices(self):
         devicesArray = src.adb_helper.get_device_list()
@@ -124,13 +125,13 @@ class MainAc(tkinter.Tk):
         print(box_value)
 
     def box_list_new_item_click_lis(self):
-        print(self.box_list.get())
+        print(self.init_box_list.get())
 
     def refresh_data(self):
-        self.box_list['menu'].delete(0, 'end')
+        self.init_box_list['menu'].delete(0, 'end')
         new_files = file_name_list(MainAc.current_workspace_path + "/apk")
         for fileName in new_files:
-            self.box_list['menu'].add_command(label=fileName, command=self.box_list_new_item_click_lis)
+            self.init_box_list['menu'].add_command(label=fileName, command=self.box_list_new_item_click_lis)
 
 
 if __name__ == "__main__":

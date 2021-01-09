@@ -1,17 +1,9 @@
-#!/usr/bin/python
-# -*- coding: UTF-8 -*-
-
-# 上面是特殊注释
-# 如果不加coding的话，默认就用ASKII了
-
 from openpyxl import Workbook
 from openpyxl.styles import Border, Side, Font, Alignment, NamedStyle
 import os
 from tkinter import filedialog
 from tkinter import *
 
-
-# 大哥你用的3.x，是想害死我
 
 class MonkeyLog(object):
     log_path = ''
